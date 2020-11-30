@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import classNames from 'classnames';
 import './TrafficLight.css';
 
 const RED = 0;
@@ -30,23 +31,17 @@ class TrafficLight extends Component {
     }
 
     render() {
-        var lightRed = 'light red';
-        var lightYellow = 'light yellow';
-        var lightGreen = 'light green';
-
-        if(this.state.currentColor === RED) {
-            lightRed += ' active';
-        } else if(this.state.currentColor === YELLOW) {
-            lightYellow += ' active';
-        } else {
-            lightGreen += ' active';
-        }
-
         return (
             <div className="traffic-light">
-                <div className={lightRed}/>
-                <div className={lightYellow}/>
-                <div className={lightGreen}/>    
+                <div className={classNames('light', 'red', {
+                    'active': this.state.currentColor === RED
+                })}/>
+                <div className={classNames('light', 'yellow', {
+                    'active': this.state.currentColor === YELLOW
+                })}/>
+                <div className={classNames('light', 'green', {
+                    'active': this.state.currentColor === GEREEN
+                })}/>   
             </div>
         );
     }

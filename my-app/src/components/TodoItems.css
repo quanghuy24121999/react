@@ -3,9 +3,17 @@
     font-weight: 300;
     font-size: 24px;
     color: rgb(68, 68, 68);
+    display: flex;
+    border-bottom: 1px solid #e4dbdb;
+    padding-left: 10px;
 }
 
-.todoItem-complete{
+.todoItem-complete p {
     text-decoration: line-through;
     opacity: 0.3;
+    padding-left: 20px;
+}
+
+.todoItem p {
+    padding-left: 20px;
 }

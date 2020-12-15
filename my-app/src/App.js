@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import './App.css';
 import TodoItems from './components/TodoItems';
-import tick from './image/tick.svg';
+import tickAll from './image/tick-all.svg';
 
 class App extends Component {
   constructor() {
@@ -13,8 +13,8 @@ class App extends Component {
         { title: "Learn React", isComplete: false}
       ]
     }
-
     this.onKeyUp = this.onKeyUp.bind(this);
+    this.onTickAll = this.onTickAll.bind(this);
   }
   
   onItemClick(item) {
@@ -58,12 +58,23 @@ class App extends Component {
     }
   }
   
+  onTickAll() {
+    this.state.todoItems.map((item) => {
+      return this.setState({
+        todoItems: [
+          ...item,
+          item.isComplete = true
+        ]
+      })
+    })
+  }
+
   render() {
     if (this.state.todoItems.length > 0) {
       return (
         <div className="App">
           <div className="add-item">
-            <img src={tick} width={32} height={32} alt=""/>
+            <img src={tickAll} width={32} height={32} alt="" onClick={this.onTickAll} />
             <input type="text" placeholder="Input an item !" onKeyUp={this.onKeyUp}/>
           </div>  
           {

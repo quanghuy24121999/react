@@ -1,20 +1,28 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { CartContext } from '../context/CartContext';
+
 export default function ProductListItem(props) {
-    const { product, addToCart } = props;
+    const { product } = props;
 
     return (
         <View style={styles.shadow}> 
             <View style={styles.container}>
-                <Image style={styles.image} source={ product.image }/>
+                <Image style={styles.image} source={{ uri: product.image }}/>
                 <View>
                     <Text style={styles.name}>{ product.name }</Text>
                     <View style={styles.priceRow}>
                         <Text style={styles.price}>{ product.price }</Text>
-                        <TouchableOpacity>
-                            <Text style={styles.addToCart}>MUA + </Text>
-                        </TouchableOpacity>
+                            <CartContext.Consumer>
+                                {({ addToCart }) => (
+                                    <TouchableOpacity>
+                                        <Text style={styles.cart} onPress={() => addToCart(product)}>
+                                            MUA + 
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            </CartContext.Consumer>
                     </View>
                 </View>
             </View>
@@ -51,7 +59,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'red'
     },
-    addToCart: {
+    cart: {
         fontSize: 15,
         color: 'blue'
     }  

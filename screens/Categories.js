@@ -1,19 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import Axios from 'axios';
 
 import CategoryListItem from '../components/CategoryListItem';
+
 
 export default class categories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      categories: [
-        { id: 1, name: 'Apple' },
-        { id: 2, name: 'Adroid' },
-        { id: 3, name: 'Windows' }
-      ]
+      categories: []
     }
+  }
+
+  componentDidMount() {
+    Axios.get('/categories')
+      .then(res => {
+        this.setState({
+          categories: res.data
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   render() {
@@ -26,7 +35,8 @@ export default class categories extends Component {
                 <CategoryListItem 
                     category={item}
                     onPress={() => navigation.navigate('Category', {
-                        categoryName: item.name
+                        categoryName: item.name,
+                        categoryId: item.id
                     })}
                 />}
             keyExtractor={(item) => `${item.id}`}  

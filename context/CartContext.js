@@ -31,10 +31,18 @@ export class CartProvider extends Component {
     decreaseQuantity(product) {
         const cartItems = this.state.cartItems;
         let arr = cartItems.slice();
+        let index;
         let arrItem = arr.find(item => {
             return item.id === product.id
         });
-        arrItem.quantity = arrItem.quantity - 1;
+
+        if (arrItem.quantity > 0) {
+            arrItem.quantity = arrItem.quantity - 1;
+        }
+        if (arrItem.quantity < 1) {
+            index = arr.indexOf(arrItem);
+            arr.splice(index, 1);
+        }   
         this.setState({
             cartItems: arr
         })

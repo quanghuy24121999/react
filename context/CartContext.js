@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 export const CartContext = React.createContext();
 
@@ -7,13 +8,25 @@ export class CartProvider extends Component {
         super(props);
 
         this.state = {
-            cartItems: []
+            cartItems: [],
+            total: 0
         }
 
+        this.getTotal = this.getTotal.bind(this);
         this.increaseQuantity = this.increaseQuantity.bind(this);
         this.decreaseQuantity = this.decreaseQuantity.bind(this);
         this.checkExist = this.checkExist.bind(this);
         this.addToCart = this.addToCart.bind(this);
+    }
+
+    getTotal(cartItems) {
+        let total = 0;
+        cartItems.forEach(item => {
+            total += item.quantity * item.price;
+        })
+        this.setState({
+            total: total
+        })
     }
 
     increaseQuantity(product) {
@@ -26,6 +39,7 @@ export class CartProvider extends Component {
         this.setState({
             cartItems: arr
         })
+        this.getTotal(cartItems);
     }
 
     decreaseQuantity(product) {
@@ -46,6 +60,7 @@ export class CartProvider extends Component {
         this.setState({
             cartItems: arr
         })
+        this.getTotal(cartItems);
     }
 
     checkExist = (product) => {
@@ -71,6 +86,9 @@ export class CartProvider extends Component {
                 this.setState({
                 cartItems: this.state.cartItems.concat(product)
             });
+            this.setState({
+                total: product.price * product.quantity
+            })
         } else {
             let item = cartItems.find(cartItem => {
                 return cartItem.id === product.id
@@ -90,6 +108,9 @@ export class CartProvider extends Component {
                     cartItems: arr
                 })
             }
+            this.setState({
+                total: this.state.total + (product.quantity * product.price)
+            })
         }
     }
 
@@ -98,9 +119,10 @@ export class CartProvider extends Component {
             <CartContext.Provider
                 value={{
                     cartItems: this.state.cartItems,
+                    total: this.state.total,
                     addToCart: this.addToCart,
                     increaseQuantity: this.increaseQuantity,
-                    decreaseQuantity: this.decreaseQuantity
+                    decreaseQuantity: this.decreaseQuantity,
                 }}
             >
                 { this.props.children }

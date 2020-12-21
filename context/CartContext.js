@@ -10,8 +10,34 @@ export class CartProvider extends Component {
             cartItems: []
         }
 
+        this.increaseQuantity = this.increaseQuantity.bind(this);
+        this.decreaseQuantity = this.decreaseQuantity.bind(this);
         this.checkExist = this.checkExist.bind(this);
         this.addToCart = this.addToCart.bind(this);
+    }
+
+    increaseQuantity(product) {
+        const cartItems = this.state.cartItems;
+        let arr = cartItems.slice();
+        let arrItem = arr.find(item => {
+            return item.id === product.id
+        });
+        arrItem.quantity = arrItem.quantity + 1;
+        this.setState({
+            cartItems: arr
+        })
+    }
+
+    decreaseQuantity(product) {
+        const cartItems = this.state.cartItems;
+        let arr = cartItems.slice();
+        let arrItem = arr.find(item => {
+            return item.id === product.id
+        });
+        arrItem.quantity = arrItem.quantity - 1;
+        this.setState({
+            cartItems: arr
+        })
     }
 
     checkExist = (product) => {
@@ -51,7 +77,7 @@ export class CartProvider extends Component {
                 let arrItem = arr.find(item => {
                     return item.id === product.id
                 });
-                arrItem.quantity = item.quantity + 1;
+                arrItem.quantity = arrItem.quantity + 1;
                 this.setState({
                     cartItems: arr
                 })
@@ -64,7 +90,9 @@ export class CartProvider extends Component {
             <CartContext.Provider
                 value={{
                     cartItems: this.state.cartItems,
-                    addToCart: this.addToCart
+                    addToCart: this.addToCart,
+                    increaseQuantity: this.increaseQuantity,
+                    decreaseQuantity: this.decreaseQuantity
                 }}
             >
                 { this.props.children }

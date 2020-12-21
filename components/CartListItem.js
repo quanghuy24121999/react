@@ -2,8 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { CartContext } from "../context/CartContext";
+
 export default function CartListItem(props) {
-    const { product, add, sub } = props;
+    const { product } = props;
     return (
         <View style={ styles.container }>
             <View style={ styles.info }>
@@ -13,11 +15,22 @@ export default function CartListItem(props) {
                     <Text style={ styles.productPrice }>{ product.price }</Text>
                 </View>
             </View>
-            <View style={ styles.rawQuantity }>
-                <Ionicons style={ styles.subIcon } name='remove-circle' size={25} onPress={() => add}/>
-                <Text style={ styles.productQuantity }>{ product.quantity }</Text>
-                <Ionicons style={ styles.addIcon } name='add-circle' size={25} onPress={() => sub} />
-            </View>
+            <CartContext.Consumer>
+                {({ increaseQuantity, decreaseQuantity }) => (
+                    <View style={ styles.rawQuantity }>
+                        <Ionicons style={ styles.subIcon } 
+                            name='remove-circle' 
+                            size={25} 
+                            onPress={() => decreaseQuantity(product)}
+                        />
+                        <Text style={ styles.productQuantity }>{ product.quantity }</Text>
+                        <Ionicons style={ styles.addIcon } 
+                            name='add-circle' 
+                            size={25} 
+                            onPress={() => increaseQuantity(product)} />
+                    </View>
+                )}
+            </CartContext.Consumer> 
         </View>
     );
 }

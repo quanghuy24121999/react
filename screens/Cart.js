@@ -19,7 +19,7 @@ export default class Cart extends Component {
                         contentContainerStyle={styles.container}
                         renderItem={({ item }) => 
                         <View style={styles.wrapper}>
-                            <CartListItem product={item} />
+                            <CartListItem product={item}/>
                         </View>
                         }
                         keyExtractor={(item) => `${item.id}`}  

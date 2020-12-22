@@ -12,10 +12,7 @@ import OrdersStack from './stackNavigator/OrdersStackNavigator';
 import SettingStack from './stackNavigator/SettingStackNavigator';
 import { CartProvider, CartContext } from './context/CartContext';
 
-Axios.defaults.baseURL = 'https://5fd8c0f47e05f000170d2f66.mockapi.io'
-
 const Tab = createBottomTabNavigator();
-
 export default class App extends Component {
   render() {
     return (  

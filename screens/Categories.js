@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import Axios from 'axios';
 
 import CategoryListItem from '../components/CategoryListItem';
-
+import { getCategories } from '../api/Server';
 
 export default class categories extends Component {
   constructor(props) {
@@ -14,21 +13,16 @@ export default class categories extends Component {
   }
 
   componentDidMount() {
-    Axios.get('/categories')
-      .then(res => {
-        this.setState({
-          categories: res.data
-        })
+    getCategories().then((categories) => {
+      this.setState({
+        categories: categories
       })
-      .catch(error => {
-        console.log(error)
-      })
+    })
   }
 
   render() {
     const { navigation } = this.props;
     const { categories } = this.state;
-
     return (  
         <FlatList data={categories}
             renderItem={({ item }) => 

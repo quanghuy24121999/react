@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 export const CartContext = React.createContext();
-
 export class CartProvider extends Component {
     constructor(props) {
         super(props);
@@ -13,11 +11,20 @@ export class CartProvider extends Component {
             quantity: 0
         }
 
+        this.emptyCart = this.emptyCart.bind(this);
         this.getTotal = this.getTotal.bind(this);
         this.increaseQuantity = this.increaseQuantity.bind(this);
         this.decreaseQuantity = this.decreaseQuantity.bind(this);
         this.checkExist = this.checkExist.bind(this);
         this.addToCart = this.addToCart.bind(this);
+    }
+
+    emptyCart() {
+        this.setState({
+            cartItems: [],
+            total: 0,
+            quantity: 0
+        })
     }
 
     getTotal(cartItems) {
@@ -129,6 +136,7 @@ export class CartProvider extends Component {
                     addToCart: this.addToCart,
                     increaseQuantity: this.increaseQuantity,
                     decreaseQuantity: this.decreaseQuantity,
+                    emptyCart: this.emptyCart
                 }}
             >
                 { this.props.children }

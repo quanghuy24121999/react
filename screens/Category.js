@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
-import Axios from 'axios';
 
 import ProductListItem from '../components/ProductListItem';
-
+import { getAllProducts } from '../api/Server';
 export default class Category extends Component {
   constructor(props) {
     super(props);
@@ -16,13 +15,11 @@ export default class Category extends Component {
   componentDidMount() {
     const { route } = this.props;
     const { categoryId } = route.params;
-    
-    Axios.get('/products?category=' + categoryId)
-      .then(res => {
-        this.setState({
-          products: res.data
-        })
+    getAllProducts(categoryId).then(products => {
+      this.setState({
+        products: products
       })
+    })
   }
 
   render() {

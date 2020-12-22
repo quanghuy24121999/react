@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 
 import CartListItem from '../components/CartListItem';
 import { CartContext } from '../context/CartContext';
-
+import { addToOrder } from "../api/Server";
 export default class Cart extends Component {
     constructor(props) {
         super(props);
@@ -13,7 +14,7 @@ export default class Cart extends Component {
     render() {
         return (
             <CartContext.Consumer>
-                {({ cartItems, total }) => (
+                {({ cartItems, total, emptyCart }) => ( 
                     <View style={styles.component}>
                         <FlatList 
                         data={ cartItems }
@@ -29,6 +30,14 @@ export default class Cart extends Component {
                             <Text style={ styles.total }>
                                 Total: { total } VND
                             </Text>
+                            <Button
+                                title='Checkout'
+                                type='solid'
+                                onPress={() => {
+                                    addToOrder(cartItems);
+                                    emptyCart();
+                                }}
+                            />
                         </View>
                     </View>
                 )}
@@ -38,7 +47,8 @@ export default class Cart extends Component {
 
 const styles = StyleSheet.create({
     component: {
-        flex: 1
+        flex: 1,
+        flexDirection: 'column'
     },
     container: {
         marginTop: 16,
@@ -49,11 +59,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8
     },
     totalRow: {
-        marginBottom: 10,
-        marginLeft: 20
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        backgroundColor: '#fff',
+        marginTop: 5
     },
     total: {
         fontSize: 24,
-        color: 'red'
+        color: 'red',
+        alignSelf: 'center'
     }
 });

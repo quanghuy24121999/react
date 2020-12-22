@@ -9,7 +9,8 @@ export class CartProvider extends Component {
 
         this.state = {
             cartItems: [],
-            total: 0
+            total: 0,
+            quantity: 0
         }
 
         this.getTotal = this.getTotal.bind(this);
@@ -57,7 +58,9 @@ export class CartProvider extends Component {
             index = arr.indexOf(arrItem);
             arr.splice(index, 1);
         }   
+        
         this.setState({
+            quantity: arr.length,
             cartItems: arr
         })
         this.getTotal(cartItems);
@@ -84,10 +87,11 @@ export class CartProvider extends Component {
         if (cartItems.length === 0) {
                 product.quantity = product.quantity + 1;
                 this.setState({
-                cartItems: this.state.cartItems.concat(product)
+                    cartItems: this.state.cartItems.concat(product)
             });
             this.setState({
-                total: product.price * product.quantity
+                total: product.price * product.quantity,
+                quantity: 1
             })
         } else {
             let item = cartItems.find(cartItem => {
@@ -96,7 +100,8 @@ export class CartProvider extends Component {
             if(item === null || item === undefined) {
                 product.quantity = product.quantity + 1;
                 this.setState({
-                    cartItems: this.state.cartItems.concat(product)
+                    cartItems: this.state.cartItems.concat(product),
+                    quantity: this.state.cartItems.length + 1
                 })
             } else {
                 arr = cartItems.slice();
@@ -120,6 +125,7 @@ export class CartProvider extends Component {
                 value={{
                     cartItems: this.state.cartItems,
                     total: this.state.total,
+                    quantity: this.state.quantity,
                     addToCart: this.addToCart,
                     increaseQuantity: this.increaseQuantity,
                     decreaseQuantity: this.decreaseQuantity,

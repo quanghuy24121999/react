@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Axios from 'axios';
 
 Axios.defaults.baseURL = 'https://5fd8c0f47e05f000170d2f66.mockapi.io/react';

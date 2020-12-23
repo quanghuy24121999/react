@@ -8,10 +8,10 @@ import { addToOrder } from "../api/Server";
 export default class Cart extends Component {
     constructor(props) {
         super(props);
-
     }
         
     render() {
+        let key = true;
         return (
             <CartContext.Consumer>
                 {({ cartItems, total, emptyCart }) => ( 

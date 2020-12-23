@@ -1,25 +1,37 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, SectionList } from 'react-native';
+import { StyleSheet, Text, View, SectionList, RefreshControl } from 'react-native';
 
 import OrderListItem from '../components/OrderListItem';
-import { getAllOrders, getOrderById } from '../api/Server';
+import { getAllOrders } from '../api/Server';
 
 export default class Orders extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            refreshing: false,
             orders: []
         }
+
+        this.refresh = this.refresh.bind(this);
     }
 
-    componentDidMount() {
+    refresh() {
+        this.setState({
+            refreshing: true
+        })
         getAllOrders().then(orders => {
             this.setState({
                 orders: orders
             })
+            this.setState({
+                refreshing: false
+            })
         })
-        
+    }
+
+    componentDidMount() {
+        this.refresh();
     }
 
     render() {
@@ -35,6 +47,13 @@ export default class Orders extends Component {
                     renderSectionHeader={({ section }) => (
                         <Text style={styles.title}>Order { section.title }</Text>
                     )}
+                    keyExtractor={(item, index) => index}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={ this.state.refreshing }
+                            onRefresh={() => this.refresh()}
+                        />
+                    }
                 />
             </View>
         )

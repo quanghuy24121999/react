@@ -16,7 +16,12 @@ export async function getCategories() {
 export function addToOrder(products) {
   Axios.post('/orders', 
     { 
-      "products" : products
+      "data" : products
     }
   )
+}
+
+export async function getAllOrders() {
+  const response = await Axios.get('/orders');
+  return response.data;
 }
